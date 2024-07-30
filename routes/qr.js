@@ -6,21 +6,7 @@ const Attendance = require('../models/Attendance');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-
-function authenticateToken(req, res, next) {
-    const secret = process.env.JWT_SECRET;
-    const token = req.headers['authorization'].split(' ')[1];
-    if (!token) return res.sendStatus(401);
-
-    jwt.verify(token, secret, (err, user) => {
-        if (err) {
-            console.log(err);
-            return res.sendStatus(403);
-        }
-        req.user = user;
-        next();
-    });
-}
+const authenticateToken = require('../middlewares/authenticateToken')
 
 router.post('/generate', authenticateToken, async (req, res) => {
     const saltRounds = 10;
