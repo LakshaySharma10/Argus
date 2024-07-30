@@ -13,10 +13,10 @@ function authenticateToken(req, res, next) {
     if (!token) return res.sendStatus(401);
 
     jwt.verify(token, secret, (err, user) => {
-        if (err){
+        if (err) {
             console.log(err);
             return res.sendStatus(403);
-        } 
+        }
         req.user = user;
         next();
     });
@@ -40,7 +40,8 @@ router.post('/generate', authenticateToken, async (req, res) => {
             userId,
             date: Date.now(),
             qrCode: qrCodeData,
-            qrToken: hashedToken
+            qrToken: hashedToken,
+            checkedIn: false // Set checkedIn to false initially
         });
 
         await qrData.save();
@@ -50,7 +51,7 @@ router.post('/generate', authenticateToken, async (req, res) => {
     }
 });
 
-router.post('/verify', async (req, res) => {
+router.post('/verify', authenticateToken, async (req, res) => {
     const { decodedToken } = req.body;
 
     try {
@@ -59,14 +60,22 @@ router.post('/verify', async (req, res) => {
             return res.status(404).json({ error: 'Invalid QR code' });
         }
 
-        const attendance = new Attendance({
-            userId: qrData.userId,
-            date: qrData.date,
-            marked: true
-        });
+        if (!qrData.checkedIn) {
+            qrData.checkedIn = true;
+            await qrData.save();
 
-        await attendance.save();
-        res.json({ message: 'Attendance marked successfully' });
+            const attendance = new Attendance({
+                userId: qrData.userId,
+                date: qrData.date,
+                marked: true
+            });
+
+            await attendance.save();
+            res.json({ message: 'Check-in successful' });
+        } else {
+            await QRData.findByIdAndDelete(qrData._id);
+            res.json({ message: 'Check-out successful, QR code invalidated' });
+        }
     } catch (err) {
         console.error('Error verifying QR code:', err);
         res.status(500).json({ error: 'Failed to verify QR code' });
