@@ -1,6 +1,6 @@
 const express = require('express');
 const EmergencyContact = require('../models/EmergencyContact');
-const authenticateToken = require('../middleware/authenticateToken');
+const authenticateToken = require('../middlewares/authenticateToken');
 const router = express.Router();
 
 router.post('/contact', authenticateToken, async (req, res) => {

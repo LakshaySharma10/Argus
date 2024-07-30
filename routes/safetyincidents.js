@@ -1,6 +1,6 @@
 const express = require('express');
-const SafetyIncident = require('../models/SafetyIncident');
-const authenticateToken = require('../middleware/authenticateToken');
+const SafetyIncident = require('../models/SafetyIncidents');
+const authenticateToken = require('../middlewares/authenticateToken');
 const router = express.Router();
 
 router.post('/incident', authenticateToken, async (req, res) => {

@@ -1,6 +1,6 @@
 const express = require('express');
-const FirstAidKit = require('../models/FirstAidKit');
-const authenticateToken = require('../middleware/authenticateToken');
+const FirstAidKit = require('../models/FirstAidStock');
+const authenticateToken = require('../middlewares/authenticateToken');
 const router = express.Router();
 
 router.post('/stock', authenticateToken, async (req, res) => {

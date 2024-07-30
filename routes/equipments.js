@@ -1,5 +1,5 @@
 const express = require('express');
-const EquipmentMaintenance = require('../models/EquipmentMaintenance');
+const EquipmentMaintenance = require('../models/Equipments');
 const authenticateToken = require('../middlewares/authenticateToken');
 const router = express.Router();
 

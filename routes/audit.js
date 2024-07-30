@@ -1,5 +1,5 @@
 const express = require('express');
-const SafetyAudit = require('../models/SafetyAudit');
+const SafetyAudit = require('../models/SafetyAudits');
 const authenticateToken = require('../middlewares/authenticateToken');
 const router = express.Router();
 
