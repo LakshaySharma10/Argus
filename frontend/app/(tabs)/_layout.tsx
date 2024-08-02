@@ -1,37 +1,45 @@
-import { Tabs } from 'expo-router';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
-
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+
+// Import screens
+import HomeScreen from '@/screens/auth/auth';
+import ProfileScreen from '@/screens/profile/profile';
+
+const Tab = createBottomTabNavigator();
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
   return (
-    <Tabs
+    <Tab.Navigator
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
       }}>
-      <Tabs.Screen
-        name="index"
+      <Tab.Screen
+        name="home"
+        component={HomeScreen}
         options={{
           title: 'Home',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
           ),
+          // tabBarStyle: { display: 'none' },
         }}
       />
-      <Tabs.Screen
-        name="explore"
+      <Tab.Screen
+        name="profile"
+        component={ProfileScreen}
         options={{
-          title: 'Explore',
+          title: 'Profile',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
           ),
         }}
       />
-    </Tabs>
+    </Tab.Navigator>
   );
 }
