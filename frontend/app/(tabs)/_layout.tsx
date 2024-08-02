@@ -7,6 +7,7 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 // Import screens
 import HomeScreen from '@/screens/auth/auth';
 import ProfileScreen from '@/screens/profile/profile';
+import CheckInScreen from '@/screens/checkin/checkin';
 
 const Tab = createBottomTabNavigator();
 
@@ -35,6 +36,18 @@ export default function TabLayout() {
         component={ProfileScreen}
         options={{
           title: 'Profile',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+          ),
+        }}
+      />
+
+
+      <Tab.Screen
+        name="CheckIn"
+        component={CheckInScreen}
+        options={{
+          title: 'CheckIn',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
           ),

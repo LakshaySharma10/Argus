@@ -21,7 +21,8 @@ export default function ProfileScreen() {
           />
         </View>
       </View>
-      <View style={styles.form}>
+        <View style={styles.formcontainer}>
+        <View style={styles.form}>
         <Text style={styles.label}>Name</Text>
         <TextInput style={styles.input} value="Sophia Patel" editable={false} />
         <Text style={styles.label}>Email</Text>
@@ -50,6 +51,8 @@ export default function ProfileScreen() {
           <Ionicons name="log-out-outline" size={20} color="red" />
         </TouchableOpacity>
       </View>
+        </View>
+      
     </View>
   );
 }
@@ -63,14 +66,21 @@ const styles = StyleSheet.create({
   headerContainer: {
     backgroundColor: '#121212',
     padding: 20,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
-    marginBottom: 20,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
+    marginBottom: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 10,
     elevation: 5,
+  },
+  formcontainer:{
+    flex: 1,
+    backgroundColor: '#f2f2f2',
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+
   },
   header: {
     flexDirection: 'row',
