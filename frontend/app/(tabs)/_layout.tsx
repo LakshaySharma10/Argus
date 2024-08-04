@@ -4,10 +4,10 @@ import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
-// Import screens
-import HomeScreen from '@/screens/auth/auth';
+// Import screens and stack
 import ProfileScreen from '@/screens/profile/profile';
 import CheckInScreen from '@/screens/checkin/checkin';
+import AuthStack from '@/navigation/Authstack'; 
 
 const Tab = createBottomTabNavigator();
 
@@ -22,13 +22,12 @@ export default function TabLayout() {
       }}>
       <Tab.Screen
         name="home"
-        component={HomeScreen}
+        component={AuthStack} 
         options={{
           title: 'Home',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
           ),
-          // tabBarStyle: { display: 'none' },
         }}
       />
       <Tab.Screen
@@ -41,8 +40,6 @@ export default function TabLayout() {
           ),
         }}
       />
-
-
       <Tab.Screen
         name="CheckIn"
         component={CheckInScreen}
@@ -56,3 +53,4 @@ export default function TabLayout() {
     </Tab.Navigator>
   );
 }
+
