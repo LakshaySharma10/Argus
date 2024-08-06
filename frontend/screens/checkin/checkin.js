@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
 import logo from '../../assets/images/argusLogo.png';
 import home from '../../assets/images/home.svg';
@@ -7,26 +7,94 @@ import plus from '../../assets/images/plus.svg';
 import heart from '../../assets/images/heart.svg';
 import qrCode from '../../assets/images/qrCode.png';
 import person from '../../assets/images/person.svg';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function CheckIn() {
-  const [name, setName] = useState('');
-  const [time, setTime] = useState({ hours: 0, minutes: 0, amPm: 'AM' });
 
-  const handleNameChange = (text) => setName(text);
+  const [user, setUser] = useState({
+    username: '',
+    email: '',
+  });
 
-  const handleTimeChange = (field, value) => {
-    setTime((prev) => ({
-      ...prev,
-      [field]: value
-    }));
+  const [qrURL, setQRURL] = useState('');
+
+  const getJWT = async () => {
+    try { 
+      const token = await AsyncStorage.getItem('jwtToken');
+      return token;
+    } catch (error) {
+      console.error('Error retrieving JWT', error);
+    }
   };
 
-  const toggleAmPm = () => {
-    setTime((prev) => ({
-      ...prev,
-      amPm: prev.amPm === 'AM' ? 'PM' : 'AM'
-    }));
+  const getUser = async () => {
+    try {
+      const token = await getJWT();
+      const response = await axios.get("http://192.168.1.9:8080/auth/profile", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setUser(response.data);
+    }
+    catch (error) {
+      console.log("Failed to retrieve user:", error);
+    }
   };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const [currentTime, setCurrentTime] = useState({
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+    amPm: ''
+  });
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+      const amPm = hours >= 12 ? 'PM' : 'AM';
+      setCurrentTime({
+        hours: hours % 12 || 12,
+        minutes: minutes < 10 ? `0${minutes}` : minutes,
+        seconds: seconds < 10 ? `0${seconds}` : seconds,
+        amPm,
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const getQRCode = async () => {
+    try {
+      const token = await getJWT();
+      const response = await axios.post("http://192.168.1.9:8080/qr/generate", {
+        email: user.email,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(response.data.qrCodeData);
+      setQRURL(response.data.qrCodeData);
+      console.log(qrURL)
+    } catch (error) {
+      console.error('Failed to generate QR code:', error);
+    }
+  }
+
+  useEffect(() => {
+    if(user.email){
+      getQRCode();
+    }
+  }, [user.email]);
 
   return (
     <View style={styles.container}>
@@ -35,41 +103,32 @@ export default function CheckIn() {
         <Image source={person} style={styles.profileIcon} />
       </View>
       <View style={styles.content}>
-        <Text style={styles.title}>Effortless Check-In  And Check-Out</Text>
-        <Image source={qrCode} style={styles.qrCode} />
+        <Text style={styles.title}>Effortless Check-In And Check-Out</Text>
+        <Image source={{ uri: qrURL }} style={styles.qrCode} />
         <View style={styles.inputContainer}>
           <Text style={styles.inputLabel}>Name</Text>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Enter your name"
-            placeholderTextColor="#888"
-            onChangeText={handleNameChange}
-            value={name}
-          />
+          <TextInput style={styles.textInput} value={user.username} editable={false} />
         </View>
         <View style={styles.timeContainer}>
           <Text style={styles.inputLabel}>Current Time</Text>
           <View style={styles.timeInput}>
             <TextInput
               style={styles.timeTextInput}
-              keyboardType="numeric"
               maxLength={2}
-              value={time.hours.toString()}
-              onChangeText={(text) => handleTimeChange('hours', parseInt(text))}
+              value={currentTime?.hours?.toString()}
+              editable={false}
             />
             <Text style={styles.timeSeparator}>:</Text>
             <TextInput
               style={styles.timeTextInput}
-              keyboardType="numeric"
               maxLength={2}
-              value={time.minutes.toString()}
+              value={currentTime?.minutes?.toString()}
               onChangeText={(text) => handleTimeChange('minutes', parseInt(text))}
             />
             <TouchableOpacity
               style={styles.timeButton}
-              onPress={toggleAmPm}
             >
-              <Text style={styles.timeButtonText}>{time.amPm}</Text>
+              <Text style={styles.timeButtonText}>{currentTime?.amPm}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -136,7 +195,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 35,
-    fontFamily: 'Montserrat SemiBold 600',
     fontWeight: 'bold',
     color: '#fff',
     marginBottom: 20,
@@ -150,7 +208,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     width: '100%',
     marginBottom: 15,
-    paddingLeft:75,
+    alignItems: 'center',
   },
   inputLabel: {
     fontSize: 16,
@@ -171,8 +229,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 5,
     marginTop: 20,
-    paddingLeft: 106,
-    
+    alignItems: 'center',
   },
   timeInput: {
     flexDirection: 'row',
@@ -194,8 +251,9 @@ const styles = StyleSheet.create({
   },
   timeButton: {
     backgroundColor: '#fff',
-    padding: 10,
+    padding: 15,
     borderRadius: 5,
+    marginLeft: 10,
   },
   timeButtonText: {
     fontSize: 16,

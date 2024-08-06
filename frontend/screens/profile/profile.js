@@ -1,8 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ProfileScreen() {
+
+  const [user, setUser] = useState({
+    username: '',
+    email: '',
+    
+  });
+
+  const getJWT = async () => {
+    try {
+      const token = await AsyncStorage.getItem('jwtToken');
+      return token;
+    } catch (error) {
+      console.error('Error retrieving JWT', error);
+    }
+  };
+
+  const getUser = async () => {
+    try {
+      const token = await getJWT();
+      const response = await axios.get("http://192.168.1.9:8080/auth/profile", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setUser(response.data);
+    }
+    catch (error) {
+      console.log("Failed to retrieve user:", error);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -24,14 +61,9 @@ export default function ProfileScreen() {
         <View style={styles.formcontainer}>
         <View style={styles.form}>
         <Text style={styles.label}>Name</Text>
-        <TextInput style={styles.input} value="Sophia Patel" editable={false} />
+        <TextInput style={styles.input} value={user.username} editable={false} />
         <Text style={styles.label}>Email</Text>
-        <TextInput style={styles.input} value="sophiapatel@gmail.com" editable={false} />
-        <Text style={styles.label}>Password</Text>
-        <View style={styles.passwordContainer}>
-          <TextInput style={styles.input} value="********" secureTextEntry editable={false} />
-          <Ionicons name="lock-closed" size={20} color="gray" />
-        </View>
+        <TextInput style={styles.input} value={user.email} editable={false} />
       </View>
       <TouchableOpacity style={styles.menuItem}>
         <Text style={styles.menuText}>Edit Profile</Text>

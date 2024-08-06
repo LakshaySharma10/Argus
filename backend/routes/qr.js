@@ -10,26 +10,24 @@ const authenticateToken = require('../middlewares/authenticateToken')
 
 router.post('/generate', authenticateToken, async (req, res) => {
     const saltRounds = 10;
-    const { userId } = req.body;
-
+    const { email } = req.body;
     try {
-        const user = await User.findById(userId);
+        const user = await User.findOne({ email: email });
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        const uniqueToken = `${userId}-${Date.now()}`;
+        const uniqueToken = `${email}-${Date.now()}`;
         const hashedToken = await bcrypt.hash(uniqueToken, saltRounds);
         const qrCodeData = await QRCode.toDataURL(hashedToken);
 
         const qrData = new QRData({
-            userId,
+            email,
             date: Date.now(),
             qrCode: qrCodeData,
             qrToken: hashedToken,
-            checkedIn: false // Set checkedIn to false initially
+            checkedIn: false
         });
-
         await qrData.save();
         res.json({ qrCodeData });
     } catch (err) {
@@ -50,10 +48,15 @@ router.post('/verify', authenticateToken, async (req, res) => {
             qrData.checkedIn = true;
             await qrData.save();
 
+            const attendanceDate = new Date(qrData.date);
+            const month = attendanceDate.getMonth() + 1;
+            const year = attendanceDate.getFullYear();
             const attendance = new Attendance({
                 userId: qrData.userId,
                 date: qrData.date,
-                marked: true
+                marked: true,   
+                month,
+                year
             });
 
             await attendance.save();
