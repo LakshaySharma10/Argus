@@ -74,12 +74,14 @@
 // }
 
 // app/(tabs)/_layout.tsx
+// TabLayout.js
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import CustomTabBar from '@/components/CustomTabBar';
 import ProfileScreen from '@/screens/profile/profile';
 import CheckInScreen from '@/screens/checkin/checkin';
 import AttendanceScreen from '@/screens/attendance/attendance';
+import LeavesScreen from '@/screens/leaves/LeavesScreen'; // Import the LeavesScreen
 import AuthStack from '@/navigation/Authstack';
 
 const Tab = createBottomTabNavigator();
@@ -120,8 +122,16 @@ export default function TabLayout() {
           title: 'Attendance',
         }}
       />
+      <Tab.Screen
+        name="leaves"
+        component={LeavesScreen}
+        options={{
+          title: 'Leaves',
+        }}
+      />
     </Tab.Navigator>
   );
 }
+
 
 
