@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function CheckIn() {
 
   const [user, setUser] = useState({
+    _id: '',
     username: '',
     email: '',
   });
@@ -31,7 +32,7 @@ export default function CheckIn() {
   const getUser = async () => {
     try {
       const token = await getJWT();
-      const response = await axios.get("http://192.168.1.9:8080/auth/profile", {
+      const response = await axios.get("http://192.168.1.11:8080/auth/profile", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -75,8 +76,8 @@ export default function CheckIn() {
   const getQRCode = async () => {
     try {
       const token = await getJWT();
-      const response = await axios.post("http://192.168.1.9:8080/qr/generate", {
-        email: user.email,
+      const response = await axios.post("http://192.168.1.11:8080/qr/generate", {
+        userId: user._id,
       }, {
         headers: {
           Authorization: `Bearer ${token}`,

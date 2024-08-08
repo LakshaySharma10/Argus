@@ -1,17 +1,81 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { View, Text, Image, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AttendanceScreen = () => {
   const navigation = useNavigation();
   const employee = {
-    id: 'EMP123',  // Unique employee ID
+    id: 'EMP123',
     name: 'Sophia Patel',
     present: 4,
     absent: 4,
     attendanceRate: 50,
     profileImage: 'https://images.unsplash.com/photo-1502685104226-ee32379fefbe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDF8fGVsZWdhbnR8ZW58MHx8fHwxNjE2OTc1MjE2&ixlib=rb-1.2.1&q=80&w=1080',
   };
+
+  const [user, setUser] = useState({
+    _id: '',
+    username: '',
+    email: '',
+    
+  });
+
+  const [attendance, setAttendance] = useState({
+    monthlyAttendance: {},
+    totalDaysPresent: 0,
+    totalWorkingDays: 0,
+  });
+
+  const getJWT = async () => {
+    try {
+      const token = await AsyncStorage.getItem('jwtToken');
+      return token;
+    } catch (error) {
+      console.error('Error retrieving JWT', error);
+    }
+  };
+
+  const getUser = async () => {
+    try {
+      const token = await getJWT();
+      const response = await axios.get("http://192.168.1.11:8080/auth/profile", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setUser(response.data);
+    }
+    catch (error) {
+      console.log("Failed to retrieve user:", error);
+    }
+  };
+
+  const getAttendanceSummary = async () => {
+    try {
+      const token = await getJWT();
+      const response = await axios.get(`http://192.168.1.11:8080/attendance/summary/${user._id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setAttendance(response.data);
+  }
+  catch (error) {
+    console.log("Failed to retrieve attendance summary:", error);
+  }
+};
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  useEffect(() => {
+    if(user._id){
+      getAttendanceSummary();
+    }
+  }, [user]);
 
   return (
     <ScrollView style={styles.container}>
@@ -33,27 +97,27 @@ const AttendanceScreen = () => {
         <Text style={styles.label}>Name:</Text>
         <TextInput
           style={styles.input}
-          placeholder={employee.name}
+          placeholder={user.username}
           placeholderTextColor="#fff"
           editable={false}
         />
         <Text style={styles.label}>Present:</Text>
         <TextInput
           style={styles.input}
-          placeholder={`${employee.present} (days)`}
+          placeholder={`${attendance.totalDaysPresent} (days)`}
           placeholderTextColor="#fff"
           editable={false}
         />
         <Text style={styles.label}>Absent:</Text>
         <TextInput
           style={styles.input}
-          placeholder={`${employee.absent} (days)`}
+          placeholder={`${attendance.totalWorkingDays} (days)`}
           placeholderTextColor="#fff"
           editable={false}
         />
         <Text style={styles.label}>Attendance Rate:</Text>
         <View style={styles.progressBarContainer}>
-          <View style={[styles.progressBarFill, { width: `${employee.attendanceRate}%` }]} />
+          <View style={[styles.progressBarFill, { width: `${(attendance.totalDaysPresent/attendance.totalWorkingDays)*100}%` }]} />
         </View>
       </View>
       <View style={styles.buttonContainer}>

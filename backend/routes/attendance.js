@@ -1,18 +1,26 @@
 const express = require('express');
 const Attendance = require('../models/Attendance');
 const router = express.Router();
+const authenticateToken = require('../middlewares/authenticateToken')
 
-router.get('/:userId', async (req, res) => {
+router.get('/:userId', authenticateToken, async (req, res) => {
     const { userId } = req.params;
     try {
         const attendanceRecords = await Attendance.find({ userId });
+
+        if (attendanceRecords.length === 0) {
+            return res.status(404).json({ message: 'No attendance records found for this user' });
+        }
+
         res.json(attendanceRecords);
     } catch (err) {
+        console.error('Error retrieving attendance records:', err);
         res.status(500).json({ error: 'Failed to retrieve attendance records' });
     }
 });
 
-router.get('/:userId/summary', async (req, res) => {
+
+router.get('/summary/:userId', authenticateToken, async (req, res) => {
     const { userId } = req.params;
     try {
         const attendanceRecords = await Attendance.find({ userId });
@@ -36,13 +44,13 @@ router.get('/:userId/summary', async (req, res) => {
                 monthlyAttendance[monthYear].daysPresent++;
             }
         });
-
         res.json({
             totalWorkingDays,
             totalDaysPresent,
             monthlyAttendance
         });
     } catch (err) {
+        console.log(err);
         res.status(500).json({ error: 'Failed to retrieve attendance summary' });
     }
 });

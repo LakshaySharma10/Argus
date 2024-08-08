@@ -24,7 +24,7 @@ const LoginScreen = ({ navigation }) => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post("http://192.168.1.9:8080/auth/login", {
+      const response = await axios.post("http://192.168.1.11:8080/auth/login", {
         email,
         password,
       });

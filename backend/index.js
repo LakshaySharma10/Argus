@@ -10,6 +10,7 @@ const emergencyRoutes = require('./routes/emergencycontact');
 const equipmentRoutes = require('./routes/equipments');
 const safetyIncidencesRoutes = require('./routes/safetyincidents');
 const firstAidRoutes = require('./routes/firstaidstock');
+const leaveRoutes = require('./routes/leaves');
 require('dotenv').config();
 
 connection()
@@ -27,6 +28,7 @@ app.use('/emergency', emergencyRoutes);
 app.use('/equipment', equipmentRoutes);
 app.use('/safetyincidents', safetyIncidencesRoutes);
 app.use('/firstaid', firstAidRoutes);
+app.use('/leave', leaveRoutes);
 
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
