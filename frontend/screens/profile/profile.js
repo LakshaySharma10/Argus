@@ -9,7 +9,6 @@ export default function ProfileScreen() {
   const [user, setUser] = useState({
     username: '',
     email: '',
-    
   });
 
   const getJWT = async () => {

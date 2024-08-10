@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Modal, Button, Picker } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Modal, Button } from 'react-native';
 import logo from '../../assets/images/argusLogo.png';
+import { Picker } from '@react-native-picker/picker';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LeavesScreen = () => {
   const [leaveType, setLeaveType] = useState('');
@@ -12,8 +15,42 @@ const LeavesScreen = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [dateModalVisible, setDateModalVisible] = useState(false);
   const [dateType, setDateType] = useState('');
+  const [user, setUser] = useState({
+    _id: '',
+    username: '',
+    email: '',
+  });
 
   const profilePictureUri = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wyNjYzN3wwfDF8c2VhcmNofDJ8fHByb2ZpbGV8ZW58MHx8fHwxNjk3NjIxOTkyfDA&ixlib=rb-4.0.3&q=80&w=400';
+
+  const getJWT = async () => {
+    try {
+      const token = await AsyncStorage.getItem('jwtToken');
+      return token;
+    } catch (error) {
+      console.error('Error retrieving JWT', error);
+    }
+  };
+
+  const getUser = async () => {
+    try {
+      const token = await getJWT();
+      const response = await axios.get("http://192.168.1.11:8080/auth/profile", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setUser(response.data);
+    }
+    catch (error) {
+      console.log("Failed to retrieve user:", error);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
 
   const showDatePicker = (type) => {
     setDateType(type);
@@ -41,6 +78,25 @@ const LeavesScreen = () => {
     setCurrentDate(newDate);
   };
 
+  const handleSubmit = () => {
+    const body = {
+      employeeId: user._id, 
+      leaveType,
+      startDate,
+      endDate,
+      reason,
+      appliedOn: appliedDate,
+      status,
+    };
+    const resposne = axios.post('http://192.168.1.11:8080/leave', body)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -65,10 +121,10 @@ const LeavesScreen = () => {
         onValueChange={(itemValue) => setLeaveType(itemValue)}
       >
         <Picker.Item label="Select type of Leave" value="" />
-        <Picker.Item label="Sick Leave" value="sick" />
-        <Picker.Item label="Casual Leave" value="casual" />
-        <Picker.Item label="Earned Leave" value="earned" />
-        <Picker.Item label="Unpaid Leave" value="unpaid" />
+        <Picker.Item label="Sick Leave" value="Sick" />
+        <Picker.Item label="Casual Leave" value="Casual" />
+        <Picker.Item label="Earned Leave" value="Earned" />
+        <Picker.Item label="Unpaid Leave" value="Unpaid" />
       </Picker>
 
       <View style={styles.row}>
@@ -106,11 +162,13 @@ const LeavesScreen = () => {
       />
 
       <Text style={styles.subheader}>Applied on</Text>
-      <TouchableOpacity onPress={() => showDatePicker('applied')} style={styles.input}>
-        <Text style={{ color: '#fff' }}>{appliedDate.toDateString()}</Text>
-      </TouchableOpacity>
+      <TextInput
+        style={styles.input}
+        value={appliedDate.toDateString()}
+        editable={false}
+      />
 
-      <TouchableOpacity style={styles.applyButton}>
+      <TouchableOpacity onPress={handleSubmit} style={styles.applyButton}>
         <Text style={styles.applyButtonText}>Apply</Text>
       </TouchableOpacity>
 

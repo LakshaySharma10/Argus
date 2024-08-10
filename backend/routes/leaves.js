@@ -29,13 +29,16 @@ router.post('/', async (req, res) => {
         leaveType: req.body.leaveType,
         startDate: req.body.startDate,
         endDate: req.body.endDate,
-        reason: req.body.reason
+        reason: req.body.reason,
+        appliedOn: req.body.appliedOn,
+        status: req.body.status
     });
 
     try {
         const newLeave = await leave.save();
         res.status(201).json(newLeave);
     } catch (err) {
+        console.log(err);
         res.status(400).json({ message: err.message });
     }
 });
