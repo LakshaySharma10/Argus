@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { View, Text, Image, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import logo from '../../assets/images/argusLogo.png';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -77,15 +78,15 @@ const AttendanceScreen = () => {
     }
   }, [user]);
 
+  const profilePictureUri = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wyNjYzN3wwfDF8c2VhcmNofDJ8fHByb2ZpbGV8ZW58MHx8fHwxNjk3NjIxOTkyfDA&ixlib=rb-4.0.3&q=80&w=400';
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <Image
-          source={{ uri: employee.profileImage }}
-          style={styles.profileImage}
-        />
-        <Text style={styles.title}>Attendance</Text>
+        <Image source={logo} style={styles.logo} />
+        <Image source={{ uri: profilePictureUri }} style={styles.profilePicture} />
       </View>
+      <Text style={styles.title}>Attendance</Text>
       <View style={styles.card}>
         <Text style={styles.label}>Employee ID:</Text>
         <TextInput
@@ -123,7 +124,7 @@ const AttendanceScreen = () => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('leaves')}
+          onPress={() => navigation.navigate('Leaves')}
         >
           <Text style={styles.buttonText}>Request Leaves</Text>
         </TouchableOpacity>
@@ -139,9 +140,18 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
-    marginTop: 25,
+  },
+  logo: {
+    width: 120,
+    height: 50,
+  },
+  profilePicture: {
+    width: 50,
+    height: 50,
+    borderRadius: 10,
   },
   profileImage: {
     width: 100,
@@ -153,6 +163,8 @@ const styles = StyleSheet.create({
     fontSize: 28,
     color: '#fff',
     fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 20,
   },
   card: {
     backgroundColor: '#333',

@@ -35,6 +35,15 @@ export default function ProfileScreen() {
     }
   };
 
+  const logOut = async () => {
+      try {
+        await AsyncStorage.removeItem('jwtToken');
+        console.log('Logged out');
+      } catch (error) {
+        console.error('Error logging out', error);
+    }
+  };
+
   useEffect(() => {
     getUser();
   }, []);
@@ -77,7 +86,7 @@ export default function ProfileScreen() {
           <Text style={styles.editButtonText}>Edit Profile</Text>
           <Ionicons name="create-outline" size={20} color="white" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.logoutButton}>
+        <TouchableOpacity onPress={logOut} style={styles.logoutButton}>
           <Text style={styles.logoutButtonText}>Log out</Text>
           <Ionicons name="log-out-outline" size={20} color="red" />
         </TouchableOpacity>

@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
 import logo from '../../assets/images/argusLogo.png';
-import home from '../../assets/images/home.svg';
-import chat from '../../assets/images/chat.svg';
-import plus from '../../assets/images/plus.svg';
-import heart from '../../assets/images/heart.svg';
-import qrCode from '../../assets/images/qrCode.png';
-import person from '../../assets/images/person.svg';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
