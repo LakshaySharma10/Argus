@@ -137,23 +137,7 @@ export default function CheckIn() {
           <Text style={styles.buttonText}>Check Out</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.footer}>
-        <TouchableOpacity style={styles.footerButton}>
-          <Image source={home} style={styles.footerIcon} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.footerButton}>
-          <Image source={person} style={styles.footerIcon} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.footerButton}>
-          <Image source={plus} style={styles.footerIcon} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.footerButton}>
-          <Image source={chat} style={styles.footerIcon} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.footerButton}>
-          <Image source={heart} style={styles.footerIcon} />
-        </TouchableOpacity>
-      </View>
+      
     </View>
   );
 }
