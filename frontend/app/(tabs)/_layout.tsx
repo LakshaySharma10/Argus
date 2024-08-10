@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome'; // Import FontAwesome icons
+import Icon from 'react-native-vector-icons/FontAwesome'; 
 import CustomTabBar from '@/components/CustomTabBar';
 import ProfileScreen from '@/screens/profile/profile';
 import CheckInScreen from '@/screens/checkin/checkin';
@@ -8,6 +8,8 @@ import AttendanceScreen from '@/screens/attendance/attendance';
 import LeavesScreen from '@/screens/leaves/LeavesScreen';
 import AuthStack from '@/navigation/Authstack';
 import Health from '@/screens/health/health';
+import Leavestack from '@/navigation/Leavestack'
+
 
 const Tab = createBottomTabNavigator();
 
@@ -53,7 +55,7 @@ export default function TabLayout() {
       />
       <Tab.Screen
         name="leaves"
-        component={LeavesScreen}
+        component={Leavestack}
         options={{
           tabBarIcon: tabBarIcon('leaf'),
         }}
