@@ -5,11 +5,10 @@ import CustomTabBar from '@/components/CustomTabBar';
 import ProfileScreen from '@/screens/profile/profile';
 import CheckInScreen from '@/screens/checkin/checkin';
 import AttendanceScreen from '@/screens/attendance/attendance';
-import LeavesScreen from '@/screens/leaves/LeavesScreen';
 import AuthStack from '@/navigation/Authstack';
 import Health from '@/screens/health/health';
 import Leavestack from '@/navigation/Leavestack'
-
+import Healthstack from '@/navigation/HeathSectionStack'
 
 const Tab = createBottomTabNavigator();
 
@@ -62,7 +61,7 @@ export default function TabLayout() {
       />
       <Tab.Screen
         name="healthCheck"
-        component={Health}
+        component={Healthstack}
         options={{
           tabBarIcon: tabBarIcon('heartbeat'),
         }}

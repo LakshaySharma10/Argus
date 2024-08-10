@@ -97,11 +97,14 @@ export default function CheckIn() {
     }
   }, [user.email]);
 
+  const profilePictureUri = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wyNjYzN3wwfDF8c2VhcmNofDJ8fHByb2ZpbGV8ZW58MHx8fHwxNjk3NjIxOTkyfDA&ixlib=rb-4.0.3&q=80&w=400';
+
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image source={logo} style={styles.argusLogo} />
-        <Image source={person} style={styles.profileIcon} />
+        <Image source={logo} style={styles.logo} />
+        <Image source={{ uri: profilePictureUri }} style={styles.profilePicture} />
       </View>
       <View style={styles.content}>
         <Text style={styles.title}>Effortless Check-In And Check-Out</Text>
@@ -145,38 +148,29 @@ export default function CheckIn() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1e1e1e',
+    backgroundColor: '#111',
+    padding: 20,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 30,
-    paddingHorizontal: 15,
-    backgroundColor: '#1e1e1e',
   },
-  argusLogo: {
-    width: 100,
-    height: 300,
-    resizeMode: 'contain',
-    position:'absolute',
-    marginLeft:140,
-    marginTop:40,
+  logo: {
+    width: 120,
+    height: 50,
   },
-  profileIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    position: 'absolute',
-    marginLeft:315,
-    marginTop:20,
+  profilePicture: {
+    width: 50,
+    height: 50,
+    borderRadius: 10,
   },
   content: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 20,
-    backgroundColor: '#1e1e1e',
+    backgroundColor: '#111',
   },
   title: {
     fontSize: 35,
@@ -256,25 +250,5 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     textAlign: 'center',
-  },
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    paddingVertical: 10,
-    backgroundColor: '#EF2A39',
-  },
-  footerButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#EF2A39',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  footerIcon: {
-    width: 30,
-    height: 30,
-    tintColor: '#fff',
   },
 });

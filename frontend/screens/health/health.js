@@ -3,10 +3,13 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, ScrollView 
 import logo from '../../assets/images/argusLogo.png';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 const profilePictureUri = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wyNjYzN3wwfDF8c2VhcmNofDJ8fHByb2ZpbGV8ZW58MHx8fHwxNjk3NjIxOTkyfDA&ixlib=rb-4.0.3&q=80&w=400';
 
 const Health = () => {
+
+  const navigation = useNavigation();
 
   const [user, setUser] = useState({
     username: '',
@@ -61,7 +64,7 @@ const Health = () => {
         },
       });
       console.log(response.data);
-      setIsEditing(false); // Disable editing after updating
+      setIsEditing(false);
     } catch (error) {
       console.error('Failed to update emergency contact:', error);
     }
@@ -175,6 +178,20 @@ const Health = () => {
           <Text style={styles.button}>{isEditing ? 'Done' : 'Update Contact'}</Text>
         </TouchableOpacity>
       </View>
+      <View style = {styles.bottomDivStyle}>
+        <TouchableOpacity
+          style={styles.changeButton}
+          onPress={() => navigation.navigate('SafetyIncidentsScreen')} 
+        >
+          <Text style={styles.applyButtonText}>Safety Incidents</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.changeButton}
+          onPress={() => navigation.navigate('SafetyAuditsScreen')} 
+        >
+          <Text style={styles.applyButtonText}>Safety Audits</Text>
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 };
@@ -245,6 +262,24 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     marginTop: 10,
+  },
+  changeButton: {
+    color: '#FFFFFF',
+    textAlign: 'center',
+    backgroundColor: '#EF2A39',
+    padding: 10,
+    borderRadius: 10,
+    marginTop: 5,
+    width: '47.5%',
+  },
+  bottomDivStyle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  applyButtonText: {
+    textAlign: 'center',
+    fontSize: 14,
+    color: '#fff',
   },
 });
 

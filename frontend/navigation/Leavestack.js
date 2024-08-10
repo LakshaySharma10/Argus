@@ -1,13 +1,13 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import MainLeavesScreen from '../screens/leaves/LeavesScreen'; // Main Leaves Screen
-import ApplyLeavesScreen from '../screens/leaves/ApplyLeaveScreen'; // Apply Leaves Screen
+import MainLeavesScreen from '../screens/leaves/LeavesScreen';
+import ApplyLeavesScreen from '../screens/leaves/ApplyLeaveScreen';
 
 const Stack = createStackNavigator();
 
 export default function Leavestack() {
   return (
-    <Stack.Navigator initialRouteName="MainScreen">
+    <Stack.Navigator initialRouteName="MainScreen" screenOptions={{ headerShown: false }}>
       <Stack.Screen
         name="MainScreen"
         component={MainLeavesScreen}

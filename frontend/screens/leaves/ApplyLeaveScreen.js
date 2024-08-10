@@ -50,7 +50,8 @@ const ApplyLeavesScreen = () => {
     getUser();
   }, []);
 
-
+  const profilePictureUri = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wyNjYzN3wwfDF8c2VhcmNofDJ8fHByb2ZpbGV8ZW58MHx8fHwxNjk3NjIxOTkyfDA&ixlib=rb-4.0.3&q=80&w=400';
+  
   const showDatePicker = (type) => {
     setDateType(type);
     setCurrentDate(type === 'start' ? startDate : endDate);
@@ -98,7 +99,11 @@ const ApplyLeavesScreen = () => {
 
   return (
     <View style={styles.container}>
-
+      <View style={styles.header}>
+        <Image source={logo} style={styles.logo} />
+        <Image source={{ uri: profilePictureUri }} style={styles.profilePicture} />
+      </View>
+      <Text style={styles.title}>Apply for Leaves</Text>
       <Text style={styles.subheader}>Employee Id</Text>
       <TextInput
         style={styles.input}

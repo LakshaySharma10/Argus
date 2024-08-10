@@ -4,9 +4,9 @@ const authenticateToken = require('../middlewares/authenticateToken');
 const router = express.Router();
 
 router.post('/incident', authenticateToken, async (req, res) => {
-    const { userId, description } = req.body;
+    const { incidentDate, description, usersInvolved } = req.body;
 
-    const incident = new SafetyIncident({ userId, description });
+    const incident = new SafetyIncident({ incidentDate, description, usersInvolved });
 
     try {
         await incident.save();
@@ -18,7 +18,7 @@ router.post('/incident', authenticateToken, async (req, res) => {
 
 router.get('/incidents', authenticateToken, async (req, res) => {
     try {
-        const incidents = await SafetyIncident.find().populate('userId', 'username');
+        const incidents = await SafetyIncident.find();
         res.json(incidents);
     } catch (err) {
         res.status(500).json({ error: 'Failed to retrieve safety incidents' });

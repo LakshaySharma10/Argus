@@ -18,7 +18,7 @@ router.post('/audit', authenticateToken, async (req, res) => {
 
 router.get('/audits', authenticateToken, async (req, res) => {
     try {
-        const audits = await SafetyAudit.find().populate('auditor', 'username');
+        const audits = await SafetyAudit.find();
         res.json(audits);
     } catch (err) {
         res.status(500).json({ error: 'Failed to retrieve safety audits' });
