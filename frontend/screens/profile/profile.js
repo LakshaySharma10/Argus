@@ -52,7 +52,7 @@ export default function ProfileScreen() {
         </View>
         <View style={styles.profileImageContainer}>
           <Image
-            source={{ uri: 'https://media.istockphoto.com/id/1474004422/photo/portrait-of-happy-young-woman-showing-thumb-up-stock-photo.jpg?s=2048x2048&w=is&k=20&c=cn7Atf2A39IHnxtJehw3jEUaXoAUd-tQ_nLEg0Mto34=' }}
+            source={{ uri: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wyNjYzN3wwfDF8c2VhcmNofDJ8fHByb2ZpbGV8ZW58MHx8fHwxNjk3NjIxOTkyfDA&ixlib=rb-4.0.3&q=80&w=400' }}
             style={styles.profileImage}
           />
         </View>
@@ -147,6 +147,7 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: '#f8f8f8',
+    color: '#333',
     padding: 10,
     borderRadius: 10,
     marginBottom: 15,
@@ -198,11 +199,6 @@ const styles = StyleSheet.create({
     borderColor: 'red',
     padding: 15,
     borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    elevation: 3,
   },
   logoutButtonText: {
     color: 'red',

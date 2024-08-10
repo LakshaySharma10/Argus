@@ -11,17 +11,19 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:userId', async (req, res) => {
     try {
-        const leave = await Leave.findById(req.params.id);
-        if (leave == null) {
-            return res.status(404).json({ message: 'Cannot find leave' });
+        const leaves = await Leave.find({ employeeId: req.params.userId });
+        if (leaves.length === 0) {
+            return res.status(404).json({ message: 'No leaves found for this user' });
         }
-        res.json(leave);
+        res.json(leaves);
     } catch (err) {
+        console.log(err);
         res.status(500).json({ message: err.message });
     }
 });
+
 
 router.post('/', async (req, res) => {
     const leave = new Leave({

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 import { useTheme } from '@react-navigation/native';
@@ -24,7 +24,7 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, descriptors, navigat
     <View style={styles.tabBar}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
-        const iconName = options.tabBarIcon || 'home'; 
+        const IconName = options.tabBarIcon as React.ComponentType<IconProps>; 
 
         const isFocused = state.index === index;
 
@@ -66,11 +66,14 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, descriptors, navigat
             style={styles.tabItem}
           >
             <Animated.View style={[styles.tabItemContent, animatedStyle]}>
-              <Icon
+              <Text>
+              {/* <Icon
                 name={iconName as string} 
                 size={24} 
                 color={isFocused ? colors.background : colors.text}
-              />
+              /> */}
+              <IconName color={isFocused ? colors.background : colors.text} size={24} />
+              </Text>
             </Animated.View>
           </TouchableOpacity>
         );

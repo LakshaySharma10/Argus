@@ -1,15 +1,72 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import logo from '../../assets/images/argusLogo.png';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MainLeavesScreen = () => {
   const navigation = useNavigation();
-  const leaves = [
-    { type: 'Earned', startDate: '12/07/2024', endDate: '13/07/2024', status: 'Pending' },
-    { type: 'Casual', startDate: '12/07/2024', endDate: '13/07/2024', status: 'Accepted' },
-    { type: 'Sick', startDate: '12/07/2024', endDate: '13/07/2024', status: 'Declined' },
-  ];
+
+  const [user, setUser] = useState({
+    _id: '',
+    username: '',
+    email: '',
+  });
+
+  const getJWT = async () => {
+    try {
+      const token = await AsyncStorage.getItem('jwtToken');
+      return token;
+    } catch (error) {
+      console.error('Error retrieving JWT', error);
+    }
+  };
+
+  const getUser = async () => {
+    try {
+      const token = await getJWT();
+      const response = await axios.get("http://192.168.1.11:8080/auth/profile", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setUser(response.data);
+    }
+    catch (error) {
+      console.log("Failed to retrieve user:", error);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const getLeaves = async () => {
+    try {
+      const token = await getJWT();
+      const response = await axios.get(`http://192.168.1.11:8080/leave/${user._id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(response.data);
+      setLeaves(response.data);
+  } catch (error) {
+    console.error('Error retrieving leaves', error);
+  }
+};
+
+useEffect(() => {
+  if (user._id) {
+    getLeaves();
+  }
+}, [user]);
+
+  const [leaves, setLeaves] = useState([
+    {leaveType: 'Sick', startDate: '2021-10-01', endDate: '2021-10-02', status: 'Pending'},
+  ]);
+
   const profilePictureUri = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wyNjYzN3wwfDF8c2VhcmNofDJ8fHByb2ZpbGV8ZW58MHx8fHwxNjk3NjIxOTkyfDA&ixlib=rb-4.0.3&q=80&w=400';
 
   return (
@@ -29,9 +86,21 @@ const MainLeavesScreen = () => {
 
         {leaves.map((leave, index) => (
           <View key={index} style={styles.tableRow}>
-            <Text style={styles.tableRowText}>{leave.type}</Text>
-            <Text style={styles.tableRowText}>{leave.startDate}</Text>
-            <Text style={styles.tableRowText}>{leave.endDate}</Text>
+            <Text style={styles.tableRowText}>{leave.leaveType}</Text>
+            <Text style={styles.tableRowText}>
+              {new Date(leave.startDate).toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+              })}
+            </Text>
+            <Text style={styles.tableRowText}>
+              {new Date(leave.endDate).toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+              })}
+            </Text>
             <Text style={[styles.tableRowText, styles.statusText]}>{leave.status}</Text>
           </View>
         ))}
@@ -53,8 +122,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     marginBottom: 20,
-    width: 380,
-    marginTop:35
+    width: 400,
+    marginTop: 35,
+    alignSelf: 'center',
   },
   tableHeader: {
     flexDirection: 'row',
@@ -77,8 +147,7 @@ const styles = StyleSheet.create({
   tableRowText: {
     fontSize: 16,
     color: '#fff',
-    width: '15%',
-    
+    width: '20%',
   },
   statusText: {
     textAlign: 'center',

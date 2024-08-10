@@ -139,7 +139,7 @@ const Health = () => {
           placeholder="User Id"
           keyboardType="numeric"
           value="EMP13422"
-          editable={false} // User ID is never editable
+          editable={false}
         />
         <TextInput
           style={styles.input}
