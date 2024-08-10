@@ -1,9 +1,14 @@
-// components/navigation/CustomTabBar.tsx
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 import { useTheme } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome'; 
+
+type IconProps = {
+  color: string;
+  size: number;
+};
 
 const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, descriptors, navigation }) => {
   const { colors } = useTheme();
@@ -19,11 +24,7 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, descriptors, navigat
     <View style={styles.tabBar}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
-        const label = options.tabBarLabel !== undefined
-          ? options.tabBarLabel
-          : options.title !== undefined
-          ? options.title
-          : route.name;
+        const iconName = options.tabBarIcon || 'home'; 
 
         const isFocused = state.index === index;
 
@@ -65,9 +66,11 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, descriptors, navigat
             style={styles.tabItem}
           >
             <Animated.View style={[styles.tabItemContent, animatedStyle]}>
-              <Text style={{ color: isFocused ? colors.background : colors.text }}>
-                {label as string}
-              </Text>
+              <Icon
+                name={iconName as string} 
+                size={24} 
+                color={isFocused ? colors.background : colors.text}
+              />
             </Animated.View>
           </TouchableOpacity>
         );

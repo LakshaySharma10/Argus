@@ -1,91 +1,19 @@
-// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-// import React from 'react';
-// import { useColorScheme } from '@/hooks/useColorScheme';
-
-// // Import screens and stack
-// import ProfileScreen from '@/screens/profile/profile';
-// import CheckInScreen from '@/screens/checkin/checkin';
-// import AttendanceScreen from '@/screens/attendance/attendance';
-// import AuthStack from '@/navigation/Authstack';
-// import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-
-// const Tab = createBottomTabNavigator();
-
-// export default function TabLayout() {
-//   const colorScheme = useColorScheme();
-
-//   return (
-//     <Tab.Navigator
-//       screenOptions={{
-//         tabBarActiveTintColor: 'white',
-//         tabBarInactiveTintColor: 'white',
-//         tabBarStyle: {
-//           backgroundColor: '#EF2A39', // Tab bar background color
-//           borderTopWidth: 0, // Optional: remove the border on top of the tab bar
-//         },
-//         tabBarLabelStyle: {
-//           fontSize: 12, // Customize the font size of the tab labels
-//           fontWeight: 'bold', // Customize the font weight of the tab labels
-//         },
-//         headerShown: false,
-//       }}>
-//       <Tab.Screen
-//         name="home"
-//         component={AuthStack}
-//         options={{
-//           title: 'Home',
-//           tabBarIcon: ({ color, focused }) => (
-//             <TabBarIcon name={focused ? 'home' : 'home'} color={color} focused={focused} />
-//           ),
-//         }}
-//       />
-//       <Tab.Screen
-//         name="profile"
-//         component={ProfileScreen}
-//         options={{
-//           title: 'Profile',
-//           tabBarIcon: ({ color, focused }) => (
-//             <TabBarIcon name={focused ? 'person' : 'person-outline'} color={color} focused={focused} />
-//           ),
-//         }}
-//       />
-//       <Tab.Screen
-//         name="CheckIn"
-//         component={CheckInScreen}
-//         options={{
-//           title: 'CheckIn',
-//           tabBarIcon: ({ color, focused }) => (
-//             <TabBarIcon name={focused ? 'check-circle' : 'check-circle-outline'} color={color} focused={focused} />
-//           ),
-//         }}
-//       />
-//       <Tab.Screen
-//         name="attendance"
-//         component={AttendanceScreen}
-//         options={{
-//           title: 'Attendance',
-//           tabBarIcon: ({ color, focused }) => (
-//             <TabBarIcon name={focused ? 'check-circle' : 'check-circle-outline'} color={color} focused={focused} />
-//           ),
-//         }}
-//       />
-//     </Tab.Navigator>
-//   );
-// }
-
-// app/(tabs)/_layout.tsx
-// TabLayout.js
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome'; // Import FontAwesome icons
 import CustomTabBar from '@/components/CustomTabBar';
 import ProfileScreen from '@/screens/profile/profile';
 import CheckInScreen from '@/screens/checkin/checkin';
 import AttendanceScreen from '@/screens/attendance/attendance';
-import LeavesScreen from '@/screens/leaves/LeavesScreen'; // Import the LeavesScreen
+import LeavesScreen from '@/screens/leaves/LeavesScreen';
 import AuthStack from '@/navigation/Authstack';
 import Health from '@/screens/health/health';
 
 const Tab = createBottomTabNavigator();
+
+const tabBarIcon = (iconName: string) => ({ color, size }: { color: string; size: number }) => (
+  <Icon name={iconName} color={color} size={size} />
+);
 
 export default function TabLayout() {
   return (
@@ -99,48 +27,44 @@ export default function TabLayout() {
         name="home"
         component={AuthStack}
         options={{
-          title: 'Home',
+          tabBarIcon: tabBarIcon('home'),
         }}
       />
       <Tab.Screen
         name="profile"
         component={ProfileScreen}
         options={{
-          title: 'Profile',
+          tabBarIcon: tabBarIcon('user'),
         }}
       />
       <Tab.Screen
         name="CheckIn"
         component={CheckInScreen}
         options={{
-          title: 'CheckIn',
+          tabBarIcon: tabBarIcon('check-circle'),
         }}
       />
       <Tab.Screen
         name="attendance"
         component={AttendanceScreen}
         options={{
-          title: 'Attendance',
+          tabBarIcon: tabBarIcon('calendar-check-o'),
         }}
       />
       <Tab.Screen
         name="leaves"
         component={LeavesScreen}
         options={{
-          title: 'Leaves',
+          tabBarIcon: tabBarIcon('leaf'),
         }}
       />
       <Tab.Screen
         name="healthCheck"
         component={Health}
         options={{
-          title: 'HealthCheck',
-          }}
-          />
+          tabBarIcon: tabBarIcon('heartbeat'),
+        }}
+      />
     </Tab.Navigator>
-    
   );
 }
-
-
-
