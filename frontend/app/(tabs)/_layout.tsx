@@ -83,6 +83,7 @@ import CheckInScreen from '@/screens/checkin/checkin';
 import AttendanceScreen from '@/screens/attendance/attendance';
 import LeavesScreen from '@/screens/leaves/LeavesScreen'; // Import the LeavesScreen
 import AuthStack from '@/navigation/Authstack';
+import Health from '@/screens/health/health';
 
 const Tab = createBottomTabNavigator();
 
@@ -129,7 +130,15 @@ export default function TabLayout() {
           title: 'Leaves',
         }}
       />
+      <Tab.Screen
+        name="healthCheck"
+        component={Health}
+        options={{
+          title: 'HealthCheck',
+          }}
+          />
     </Tab.Navigator>
+    
   );
 }
 
