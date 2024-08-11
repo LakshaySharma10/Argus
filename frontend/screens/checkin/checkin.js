@@ -26,7 +26,7 @@ export default function CheckIn() {
   const getUser = async () => {
     try {
       const token = await getJWT();
-      const response = await axios.get("http://192.168.1.11:8080/auth/profile", {
+      const response = await axios.get("http://localhost:8080/auth/profile", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -70,7 +70,7 @@ export default function CheckIn() {
   const getQRCode = async () => {
     try {
       const token = await getJWT();
-      const response = await axios.post("http://192.168.1.11:8080/qr/generate", {
+      const response = await axios.post("http://localhost:8080/qr/generate", {
         userId: user._id,
       }, {
         headers: {

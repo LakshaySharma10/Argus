@@ -37,7 +37,7 @@ const Health = () => {
   const getUser = async () => {
     try {
       const token = await getJWT();
-      const response = await axios.get("http://192.168.1.11:8080/auth/profile", {
+      const response = await axios.get("http://localhost:8080/auth/profile", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -52,7 +52,7 @@ const Health = () => {
   const updateEmergencyContact = async () => {
     try {
       const token = await getJWT();
-      const response = await axios.post('http://192.168.1.11:8080/emergency/contact', {
+      const response = await axios.post('http://localhost:8080/emergency/contact', {
         userId: user._id,
         name: contactData.name,
         relation: contactData.relation,
@@ -73,7 +73,7 @@ const Health = () => {
   const getEmergencyContact = async () => {
     try {
       const token = await getJWT();
-      const response = await axios.get(`http://192.168.1.11:8080/emergency/contacts/${user._id}`, {
+      const response = await axios.get(`http://localhost:8080/emergency/contacts/${user._id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

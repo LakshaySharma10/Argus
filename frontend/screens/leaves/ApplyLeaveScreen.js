@@ -34,7 +34,7 @@ const ApplyLeavesScreen = () => {
   const getUser = async () => {
     try {
       const token = await getJWT();
-      const response = await axios.get("http://192.168.1.11:8080/auth/profile", {
+      const response = await axios.get("http://localhost:8080/auth/profile", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -88,7 +88,7 @@ const ApplyLeavesScreen = () => {
       appliedOn: appliedDate,
       status,
     };
-    const resposne = axios.post('http://192.168.1.11:8080/leave', body)
+    const resposne = axios.post('http://localhost:8080/leave', body)
       .then((response) => {
         console.log(response.data);
       })

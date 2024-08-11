@@ -28,7 +28,7 @@ const SafetyAudits = () => {
     const getUser = async () => {
         try {
             const token = await getJWT();
-            const response = await axios.get("http://192.168.1.11:8080/auth/profile", {
+            const response = await axios.get("http://localhost:8080/auth/profile", {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -46,7 +46,7 @@ const SafetyAudits = () => {
     const getSafetyAudits = async () => {
         try {
             const token = await getJWT();
-            const response = await axios.get("http://192.168.1.11:8080/audit/audits", {
+            const response = await axios.get("http://localhost:8080/audit/audits", {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
