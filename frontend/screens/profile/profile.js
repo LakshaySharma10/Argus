@@ -4,9 +4,12 @@ import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity } from 'reac
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 import ChatBot from '../chatbot/chatbot';
 
 export default function ProfileScreen() {
+
+  const navigation = useNavigation();
 
   const [user, setUser] = useState({
     username: '',
@@ -85,8 +88,8 @@ export default function ProfileScreen() {
           <Text style={styles.menuText}>Edit Profile</Text>
           <Ionicons name="chevron-forward" size={20} color="black" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem}>
-          <Text style={styles.menuText}>Current Status</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('WorkingConditions')} style={styles.menuItem}>
+          <Text style={styles.menuText}>Working Conditions</Text>
           <Ionicons name="chevron-forward" size={20} color="black" />
         </TouchableOpacity>
         <View style={styles.buttonsContainer}>

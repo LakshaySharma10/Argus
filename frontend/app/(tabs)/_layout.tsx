@@ -2,12 +2,12 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React, { useState, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CustomTabBar from '@/components/CustomTabBar';
-import ProfileScreen from '@/screens/profile/profile';
 import CheckInScreen from '@/screens/checkin/checkin';
 import AttendanceScreen from '@/screens/attendance/attendance';
 import AuthStack from '@/navigation/Authstack';
 import Leavestack from '@/navigation/Leavestack';
 import Healthstack from '@/navigation/HeathSectionStack';
+import Profilestack from '@/navigation/Profilestack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { View, Text } from 'react-native';
 
@@ -69,7 +69,7 @@ export default function TabLayout() {
           />
           <Tab.Screen
             name="Profile"
-            component={ProfileScreen}
+            component={Profilestack}
             options={{
               tabBarIcon: tabBarIcon('user'),
             }}
