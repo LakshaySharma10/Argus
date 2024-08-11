@@ -32,6 +32,17 @@ const Health = () => {
 
   const [isEditing, setIsEditing] = useState(false);
 
+  const [workingConditions, setWorkingConditions] = useState({
+    temperature: 0,
+    humidity: 0,
+    noise: 0,
+    light: 0,
+    airQuality: 0,
+    amenities: '',
+    breaks: '',
+    otherConditions: '',
+  });
+
   const getJWT = async () => {
     try {
       const token = await AsyncStorage.getItem('jwtToken');
@@ -90,6 +101,25 @@ const Health = () => {
     console.error('Failed to retrieve emergency contact:', error);
   }
 };
+
+  const getWorkingConditions = async () => {
+    try {
+      const token = await getJWT();
+      const response = await axios.get('http://localhost:8080/workingConditions', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(response.data[0]);
+    } catch (error) {
+      console.error('Failed to retrieve working conditions:', error);
+    }
+  }
+
+  useEffect(() => {
+    getWorkingConditions();
+  }, []);
+
 
   useEffect(() => {
     getUser();
