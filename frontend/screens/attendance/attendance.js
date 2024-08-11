@@ -4,16 +4,15 @@ import logo from '../../assets/images/argusLogo.png';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ChatBot from '../chatbot/chatbot';
+import { Ionicons } from '@expo/vector-icons';
 
 const AttendanceScreen = () => {
   const navigation = useNavigation();
-  const employee = {
-    id: 'EMP123',
-    name: 'Sophia Patel',
-    present: 4,
-    absent: 4,
-    attendanceRate: 50,
-    profileImage: 'https://images.unsplash.com/photo-1502685104226-ee32379fefbe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDF8fGVsZWdhbnR8ZW58MHx8fHwxNjE2OTc1MjE2&ixlib=rb-1.2.1&q=80&w=1080',
+
+  const [chatVisible, setChatVisible] = useState(false);
+  const toggleChat = () => {
+    setChatVisible(!chatVisible);
   };
 
   const [user, setUser] = useState({
@@ -81,7 +80,7 @@ const AttendanceScreen = () => {
   const profilePictureUri = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wyNjYzN3wwfDF8c2VhcmNofDJ8fHByb2ZpbGV8ZW58MHx8fHwxNjk3NjIxOTkyfDA&ixlib=rb-4.0.3&q=80&w=400';
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.header}>
         <Image source={logo} style={styles.logo} />
         <Image source={{ uri: profilePictureUri }} style={styles.profilePicture} />
@@ -91,7 +90,7 @@ const AttendanceScreen = () => {
         <Text style={styles.label}>Employee ID:</Text>
         <TextInput
           style={styles.input}
-          placeholder={employee.id}
+          placeholder='EMP123'
           placeholderTextColor="#fff"
           editable={false}
         />
@@ -129,7 +128,12 @@ const AttendanceScreen = () => {
           <Text style={styles.buttonText}>Request Leaves</Text>
         </TouchableOpacity>
       </View>
-    </ScrollView>
+      <TouchableOpacity style={styles.fab} onPress={toggleChat}>
+        <Ionicons name="chatbubble-ellipses-outline" size={24} color="white" />
+      </TouchableOpacity>
+
+      {chatVisible && (<ChatBot visible={chatVisible} toggleChat={toggleChat} />)}
+    </View>
   );
 };
 
@@ -138,6 +142,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#1c1c1c',
     padding: 20,
+    height: '100%',
   },
   header: {
     flexDirection: 'row',
@@ -207,6 +212,22 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 18,
     color: '#fff',
+  },
+  fab: {
+    position: 'absolute',
+    bottom: 30,
+    right: 15,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#ff5c5c',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 5,
   },
 });
 

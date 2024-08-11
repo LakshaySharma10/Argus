@@ -1,8 +1,10 @@
+// ProfileScreen.js
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity, Animated, Easing } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ChatBot from '../chatbot/chatbot';
 
 export default function ProfileScreen() {
 
@@ -12,7 +14,6 @@ export default function ProfileScreen() {
   });
 
   const [chatVisible, setChatVisible] = useState(false);
-  const [animation] = useState(new Animated.Value(0));
 
   const getJWT = async () => {
     try {
@@ -49,22 +50,11 @@ export default function ProfileScreen() {
 
   const toggleChat = () => {
     setChatVisible(!chatVisible);
-    Animated.timing(animation, {
-      toValue: chatVisible ? 0 : 1,
-      duration: 300,
-      easing: Easing.ease,
-      useNativeDriver: false,
-    }).start();
   };
 
   useEffect(() => {
     getUser();
   }, []);
-
-  const chatSize = animation.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['60px', '375px'],
-  });
 
   return (
     <View style={styles.container}>
@@ -115,25 +105,7 @@ export default function ProfileScreen() {
         <Ionicons name="chatbubble-ellipses-outline" size={24} color="white" />
       </TouchableOpacity>
 
-      
-      {chatVisible && (
-        <Animated.View style={[styles.chatContainer, { width: chatSize, height: chatSize }]}>
-          <View style={styles.chatHeader}>
-            <Text style={styles.chatTitle}>Chat with Us</Text>
-            <TouchableOpacity onPress={toggleChat}>
-              <Ionicons name="close" size={24} color="white" />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.chatBody}>
-          </View>
-          <View style={styles.chatFooter}>
-            <TextInput style={styles.chatInput} placeholder="Type a message..." />
-            <TouchableOpacity style={styles.sendButton}>
-              <Ionicons name="send" size={24} color="white" />
-            </TouchableOpacity>
-          </View>
-        </Animated.View>
-      )}
+      {chatVisible && (<ChatBot visible={chatVisible} toggleChat={toggleChat} />)}
     </View>
   );
 }
@@ -266,57 +238,4 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 5,
   },
-  chatContainer: {
-    position: 'absolute',
-    bottom: 30,
-    right: 17,
-    backgroundColor: '#fff',
-    borderRadius: 15,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 10,
-    elevation: 5,
-
-  },
-  chatHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 15,
-    backgroundColor: '#ff5c5c',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-  },
-  chatTitle: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  chatBody: {
-    height: '70%',
-    padding: 15,
-    backgroundColor: '#f8f8f8',
-  },
-  chatFooter: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 10,
-    backgroundColor: '#fff',
-    borderTopWidth: 1,
-    borderTopColor: '#ddd',
-  },
-  chatInput: {
-    flex: 1,
-    padding: 10,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    marginRight: 10,
-  },
-  sendButton: {
-    backgroundColor: '#ff5c5c',
-    borderRadius: 20,
-    padding: 10,
-  },
 });
-

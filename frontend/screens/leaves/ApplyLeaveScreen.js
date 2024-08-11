@@ -4,8 +4,16 @@ import logo from '../../assets/images/argusLogo.png';
 import { Picker } from '@react-native-picker/picker';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ChatBot from '../chatbot/chatbot';
+import { Ionicons } from '@expo/vector-icons';
 
 const ApplyLeavesScreen = () => {
+
+  const [chatVisible, setChatVisible] = useState(false);
+  const toggleChat = () => {
+    setChatVisible(!chatVisible);
+  };
+
   const [leaveType, setLeaveType] = useState('');
   const [reason, setReason] = useState('');
   const [startDate, setStartDate] = useState(new Date());
@@ -191,6 +199,11 @@ const ApplyLeavesScreen = () => {
           </View>
         </View>
       </Modal>
+      <TouchableOpacity style={styles.fab} onPress={toggleChat}>
+        <Ionicons name="chatbubble-ellipses-outline" size={24} color="white" />
+      </TouchableOpacity>
+
+      {chatVisible && (<ChatBot visible={chatVisible} toggleChat={toggleChat} />)}
     </View>
   );
 };
@@ -300,6 +313,22 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  fab: {
+    position: 'absolute',
+    bottom: 30,
+    right: 15,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#ff5c5c',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 5,
   },
 });
 
