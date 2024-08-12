@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const authenticateToken = require('../middlewares/authenticateToken')
 
-router.post('/generate', authenticateToken, async (req, res) => {
+router.post('/generate', async (req, res) => {
     const saltRounds = 10;
     const { userId } = req.body;
     const today = new Date();
@@ -51,11 +51,12 @@ router.post('/generate', authenticateToken, async (req, res) => {
     }
 });
 
-router.post('/verify', authenticateToken, async (req, res) => {
+router.post('/verify', async (req, res) => {
     const { decodedToken } = req.body;
 
     try {
         const qrData = await QRData.findOne({ qrToken: decodedToken });
+        console.log(qrData);
         if (!qrData) {
             return res.status(404).json({ error: 'Invalid QR code' });
         }
