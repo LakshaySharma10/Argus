@@ -78,7 +78,6 @@ const MainScreen = () => {
   return (
     <div className="bg-black min-h-screen text-white p-8">
       <div className="grid grid-cols-3 gap-8">
-        {/* Warehouse Overview */}
         <div className="bg-gray-800 p-6 rounded-lg">
     <h2 className="text-4xl font-semibold">Warehouse Overview</h2>
     <p className="text-gray-400">Key metrics and statistics about the Employees</p>

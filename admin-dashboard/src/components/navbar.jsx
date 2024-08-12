@@ -12,7 +12,7 @@ const Navbar = () => {
 
   return (
     <header className='w-full py-5 sm:px-10 px-5 flex justify-between items-center'>
-        <img src={logo} alt="Logo" width={80} height={30} className='ml-4'/>
+        <img src={logo} alt="Logo" width={120} height={50} className='ml-4'/>
         <nav className='flex w-full screen-max-width'>
             <div className='flex flex-1 justify-center max-sm:hidden'>
                 {navLists.map((nav, index) => (
