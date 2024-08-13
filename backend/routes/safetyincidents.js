@@ -3,7 +3,7 @@ const SafetyIncident = require('../models/SafetyIncidents');
 const authenticateToken = require('../middlewares/authenticateToken');
 const router = express.Router();
 
-router.post('/incident', authenticateToken, async (req, res) => {
+router.post('/incident', async (req, res) => {
     const { incidentDate, description, usersInvolved } = req.body;
 
     const incident = new SafetyIncident({ incidentDate, description, usersInvolved });
@@ -16,7 +16,7 @@ router.post('/incident', authenticateToken, async (req, res) => {
     }
 });
 
-router.get('/incidents', authenticateToken, async (req, res) => {
+router.get('/incidents', async (req, res) => {
     try {
         const incidents = await SafetyIncident.find();
         res.json(incidents);

@@ -3,7 +3,7 @@ const SafetyAudit = require('../models/SafetyAudits');
 const authenticateToken = require('../middlewares/authenticateToken');
 const router = express.Router();
 
-router.post('/audit', authenticateToken, async (req, res) => {
+router.post('/audit', async (req, res) => {
     const { auditDate, auditor, findings, recommendations } = req.body;
 
     const audit = new SafetyAudit({ auditDate, auditor, findings, recommendations });
@@ -16,7 +16,7 @@ router.post('/audit', authenticateToken, async (req, res) => {
     }
 });
 
-router.get('/audits', authenticateToken, async (req, res) => {
+router.get('/audits', async (req, res) => {
     try {
         const audits = await SafetyAudit.find();
         res.json(audits);
