@@ -164,7 +164,7 @@ export const SafetyCheck = () => {
                             
                             <div className='flex justify-center'>
                                 <button 
-                                    className="bg-blue w-44 p-2 rounded-lg w-full text-white font-semibold"
+                                    className="bg-blue w-44 p-2 rounded-lg  text-white font-semibold"
                                     onClick={handleUpdateAudit}
                                 >
                                     Update Audit
@@ -236,7 +236,7 @@ export const SafetyCheck = () => {
                             
                             <div className='flex justify-center'>
                                 <button 
-                                    className="bg-blue w-44 p-2 rounded-lg w-full text-white font-semibold"
+                                    className="bg-blue w-44 p-2 rounded-lg text-white font-semibold"
                                     onClick={handleUpdateIncident}
                                 >
                                     Report Incident
