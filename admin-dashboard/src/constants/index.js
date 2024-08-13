@@ -1,1 +1,1 @@
-export const navLists = ["Check In-Out", "Leaves","Safety Check"];
+export const navLists = ["Check In-Out", "Leaves","Safety Check","Chat Analysis"];
